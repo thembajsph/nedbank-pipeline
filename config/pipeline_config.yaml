@@ -1,0 +1,30 @@
+pipeline:
+  name: "nedbank_medallion_pipeline"
+  version: "1.0.0"
+
+paths:
+  input:
+    accounts: "/data/input/accounts.csv"
+    transactions: "/data/input/transactions.jsonl"
+    customers: "/data/input/customers.csv"
+  output:
+    bronze: "/data/output/bronze"
+    silver: "/data/output/silver"
+    gold: "/data/output/gold"
+
+processing:
+  deduplication_strategy: "keep_latest"
+  date_formats:
+    - "yyyy-MM-dd"
+    - "dd/MM/yyyy"
+  timestamp_formats:
+    - "yyyy-MM-dd HH:mm:ss"
+
+quality:
+  min_record_count: 0
+  max_null_percentage: 0.95
+
+spark:
+  shuffle_partitions: 4
+  parallel_degree: 4
+  adaptive_optimization: true

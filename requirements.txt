@@ -1,0 +1,3 @@
+# Base image already contains all required packages:
+# pyspark==3.5.0, delta-spark, pandas, pyarrow, pyyaml
+# No additional packages needed for core functionality
