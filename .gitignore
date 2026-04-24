@@ -1,6 +1,5 @@
-# Pipeline output — never commit these.
-# The scoring system provides the output directory via volume mount;
-# any output baked into your image is unreachable.
+# Output directories
+data/output/
 output/
 
 # Python
@@ -9,26 +8,22 @@ __pycache__/
 *.pyo
 *.pyd
 .Python
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
 
-# Virtual environments
-.venv/
-venv/
-env/
-
-# macOS
-.DS_Store
-
-# Editor / IDE
+# IDE
 .vscode/
 .idea/
 *.swp
 *.swo
 
-# Jupyter
-.ipynb_checkpoints/
+# OS
+.DS_Store
+Thumbs.db
 
-# Stream data (Stage 3) — provided via Docker mount during scoring
+# Test data
+sample_data/
 stream/*.jsonl
-
-# Test artefacts
-.pytest_cache/

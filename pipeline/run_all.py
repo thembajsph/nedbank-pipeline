@@ -1,24 +1,32 @@
-"""
-Pipeline entry point.
+#!/usr/bin/env python3
+"""Main entry point - runs all pipeline layers."""
 
-Orchestrates the three medallion architecture stages in order:
-  1. Ingest  — reads raw source files into Bronze layer Delta tables
-  2. Transform — cleans and conforms Bronze into Silver layer Delta tables
-  3. Provision — joins and aggregates Silver into Gold layer Delta tables
+import sys
+import subprocess
+import logging
 
-The scoring system invokes this file directly:
-  docker run ... python pipeline/run_all.py
+logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
+logger = logging.getLogger(__name__)
 
-Do not add interactive prompts, argument parsing that blocks execution,
-or any code that reads from stdin. The container has no TTY attached.
-"""
-
-from pipeline.ingest import run_ingestion
-from pipeline.transform import run_transformation
-from pipeline.provision import run_provisioning
-
+def main():
+    """Run all pipeline layers in sequence."""
+    logger.info("=" * 60)
+    logger.info("Starting Nedbank Medallion Pipeline")
+    logger.info("=" * 60)
+    
+    layers = ['ingest', 'transform', 'provision']
+    
+    for layer in layers:
+        logger.info(f"\n>>> Running {layer}.py...")
+        result = subprocess.run([sys.executable, '-m', f'pipeline.{layer}'])
+        if result.returncode != 0:
+            logger.error(f"Pipeline failed at {layer} layer")
+            sys.exit(result.returncode)
+    
+    logger.info("=" * 60)
+    logger.info("Pipeline completed successfully")
+    logger.info("=" * 60)
+    sys.exit(0)
 
 if __name__ == "__main__":
-    run_ingestion()
-    run_transformation()
-    run_provisioning()
+    main()

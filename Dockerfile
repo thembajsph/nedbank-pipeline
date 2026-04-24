@@ -1,11 +1,15 @@
+# Use your locally built base image
 FROM nedbank-base:latest
 
 WORKDIR /app
 
+COPY requirements.txt .
+RUN if [ -s requirements.txt ]; then pip install --no-cache-dir -r requirements.txt; fi
+
 COPY pipeline/ ./pipeline/
 COPY config/ ./config/
 
-# Ensure duckdb is available (it's already in base image)
-RUN python3 -c "import duckdb; print(f'DuckDB version: {duckdb.__version__}')"
+ENV PYTHONPATH=/app
 
-CMD ["python3", "-c", "print('Nedbank Pipeline Ready')"]
+# Run all pipeline layers
+CMD ["python", "-m", "pipeline.run_all"]
