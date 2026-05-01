@@ -1,0 +1,4 @@
+pipeline:
+  name: "nedbank_medallion_pipeline"
+  version: "2.0.0"
+  stage: 2
