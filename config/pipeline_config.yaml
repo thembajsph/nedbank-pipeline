@@ -2,3 +2,20 @@ pipeline:
   name: "nedbank_medallion_pipeline"
   version: "2.0.0"
   stage: 2
+
+paths:
+  input:
+    base: "/data/input"
+  output:
+    base: "/data/output"
+    bronze: "/data/output/bronze"
+    silver: "/data/output/silver"
+    gold: "/data/output/gold"
+
+quality:
+  dq_rules_file: "/data/config/dq_rules.yaml"
+  quarantine_null_keys: true
+
+spark:
+  shuffle_partitions: 4
+  parallel_degree: 4

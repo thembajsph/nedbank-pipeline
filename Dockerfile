@@ -1,4 +1,4 @@
-FROM nedbank-base:latest
+FROM nedbank-de-challenge/base:1.0
 
 WORKDIR /app
 
