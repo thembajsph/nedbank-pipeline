@@ -1,0 +1,40 @@
+# Data Quality Rules for Stage 2
+version: "2.0"
+stage: 2
+
+dq_issues:
+  DUPLICATE_DEDUPED:
+    description: "Duplicate transaction events"
+    handling_action: "DEDUPLICATED"
+    severity: "WARNING"
+    
+  ORPHANED_ACCOUNT:
+    description: "Transactions with account_id not in accounts"
+    handling_action: "FLAGGED"
+    severity: "ERROR"
+    
+  TYPE_MISMATCH:
+    description: "Amount field as string instead of numeric"
+    handling_action: "NORMALISED"
+    severity: "WARNING"
+    
+  DATE_FORMAT:
+    description: "Mixed date formats"
+    handling_action: "NORMALISED"
+    severity: "WARNING"
+    
+  CURRENCY_VARIANT:
+    description: "Non-standard currency representations"
+    handling_action: "NORMALISED"
+    severity: "INFO"
+    
+  NULL_REQUIRED:
+    description: "Null primary key"
+    handling_action: "QUARANTINED"
+    severity: "ERROR"
+
+handling_rules:
+  NORMALISED: "Fix and retain"
+  FLAGGED: "Retain with dq_flag"
+  DEDUPLICATED: "Remove duplicates"
+  QUARANTINED: "Exclude from output"
